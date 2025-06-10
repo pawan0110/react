@@ -12,7 +12,17 @@ function App() {
   const addValue = () => {
     if(counter <20) {
       // counter = counter+1;
-      setCounter(counter+1)
+
+      // setCounter(counter+1)
+      // setCounter(counter-4)
+      // setCounter(counter+2) // only this will be executed
+
+
+      //method 2 => react interview questions
+      setCounter(prevCounter => prevCounter+1)
+      setCounter(prevCounter => prevCounter+1)
+      setCounter(prevCounter => prevCounter+1)
+      setCounter(prevCounter => prevCounter+1)// all four will be implemented
     } else {
       console.log("counter can't go above 20");
       
