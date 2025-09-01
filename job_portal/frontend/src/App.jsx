@@ -2,10 +2,17 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./components/auth/Login.jsx";
 import Signup from "./components/auth/Signup.jsx";
 import Home from "./components/Home";
-import Jobs from "./components/Jobs.jsx"; // ✅ Corrected here
+import Jobs from "./components/Jobs.jsx";
 import Browse from "./components/Browse.jsx";
 import Profile from "./components/ui/profile.jsx";
 import JobDescription from "./components/JobDescription.jsx";
+import Companies from "./components/admin/companies.jsx"; // ✅ Capitalized
+import CompanyCreate from "./components/admin/CompanyCreate.jsx";
+import CompanySetup from "./components/admin/CompanySetup.jsx";
+import OtherJobs from "./components/admin/OtherJobs.jsx";
+import PostJob from "./components/admin/PostJob.jsx";
+import Applicants from "./components/admin/Applicants.jsx";
+import ProtectedRoute from "./components/admin/ProtectedRaute.jsx";
 
 const appRouter = createBrowserRouter([
   {
@@ -22,7 +29,7 @@ const appRouter = createBrowserRouter([
   },
   {
     path: "/jobs",
-    element: <Jobs />, // ✅ Corrected here
+    element: <Jobs />,
   },
   {
     path: "/description/:id",
@@ -35,6 +42,30 @@ const appRouter = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />,
+  },
+  {
+    path: "/admin/companies",
+    element: <ProtectedRoute><Companies /> </ProtectedRoute>// ✅ Corrected usage
+  },
+  {
+    path: "/admin/companies/create",
+    element:<ProtectedRoute><CompanyCreate /> </ProtectedRoute>
+  },
+  {
+    path: "/admin/companies/:id",
+    element: <ProtectedRoute><CompanySetup /></ProtectedRoute>
+  },
+  {
+    path: "/admin/jobs",
+    element: <ProtectedRoute><OtherJobs /></ProtectedRoute>
+  },
+  {
+    path: "/admin/jobs/create",
+    element: <ProtectedRoute><PostJob /></ProtectedRoute>
+  },
+  {
+    path: "/admin/companies/:id/applicants",
+    element: <ProtectedRoute><Applicants/></ProtectedRoute> 
   },
 ]);
 

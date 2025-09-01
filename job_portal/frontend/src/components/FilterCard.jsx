@@ -1,75 +1,90 @@
-import React from "react";
-import * as Popover from "@radix-ui/react-popover";
-import { RadioGroup, RadioGroupItem } from "@radix-ui/react-radio-group";
-import { Label } from "@radix-ui/react-label";
-import { SlidersHorizontal } from "lucide-react";
+import React, { useState, useEffect } from "react";
 
-const filterData = [
-  {
-    filterType: "Location",
-    array: ["Delhi", "Mumbai", "Bangalore", "Hyderabad", "Pune"],
-  },
-  {
-    filterType: "Industry",
-    array: ["Google", "Microsoft", "Amazon", "Flipkart", "Paytm", "Zoho"],
-  },
-  {
-    filterType: "Salary",
-    array: ["0-10LPA", "10-20LPA", "30-40LPA", "40LPA+"],
-  },
-];
+const FilterCard = ({ jobs = [], onFilterChange }) => {
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [selectedIndustry, setSelectedIndustry] = useState("");
+  const [selectedSalary, setSelectedSalary] = useState("");
 
-const FilterCard = () => {
+  // Extract unique filter options
+  const uniqueLocations = [...new Set(jobs.map((job) => job.location).filter(Boolean))];
+  const uniqueIndustries = [...new Set(jobs.map((job) => job.company?.name).filter(Boolean))];
+  const uniqueSalaries = [...new Set(jobs.map((job) => job.salary).filter(Boolean))];
+
+  // Trigger filter changes when selections change
+  useEffect(() => {
+    onFilterChange({
+      Location: selectedLocation,
+      Industry: selectedIndustry,
+      Salary: selectedSalary,
+    });
+  }, [selectedLocation, selectedIndustry, selectedSalary, onFilterChange]);
+
   return (
-    <div className="relative w-full flex justify-end mb-4">
-      <Popover.Root>
-        <Popover.Trigger asChild>
-          <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-500 to-cyan-600 text-white rounded-lg hover:from-teal-600 hover:to-cyan-700 transition font-medium shadow-md">
-            <SlidersHorizontal className="w-4 h-4" />
-            Filter
-          </button>
-        </Popover.Trigger>
+    <div className="bg-white p-4 rounded-2xl shadow-md border border-gray-200">
+      <h2 className="text-xl font-semibold mb-4">Filter Jobs</h2>
 
-        <Popover.Portal>
-          <Popover.Content
-            side="bottom"
-            align="end"
-            className="z-50 w-[300px] sm:w-[350px] bg-white rounded-xl shadow-lg p-5 border border-gray-200"
-            sideOffset={8}
-          >
-            <h1 className="text-lg font-semibold text-gray-800 mb-4">Filter Jobs</h1>
+      {/* Location Filter */}
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-1">Location</label>
+        <select
+          value={selectedLocation}
+          onChange={(e) => setSelectedLocation(e.target.value)}
+          className="w-full border border-gray-300 rounded-lg p-2"
+        >
+          <option value="">All</option>
+          {uniqueLocations.map((loc) => (
+            <option key={loc} value={loc}>
+              {loc}
+            </option>
+          ))}
+        </select>
+      </div>
 
-            {filterData.map((filter, index) => (
-              <div key={index} className="mb-5">
-                <h2 className="text-sm font-semibold text-gray-700 mb-2">{filter.filterType}</h2>
-                <RadioGroup className="flex flex-wrap gap-2">
-                  {filter.array.map((item, idx) => {
-                    const id = `${filter.filterType}-${idx}`;
-                    return (
-                      <div key={id}>
-                        <RadioGroupItem id={id} value={item} className="sr-only peer" />
-                        <Label
-                          htmlFor={id}
-                          className="peer-checked:bg-indigo-600 peer-checked:text-white text-sm cursor-pointer px-3 py-1.5 border border-gray-300 rounded-md text-gray-700 hover:bg-teal-100 transition"
-                        >
-                          {item}
-                        </Label>
-                      </div>
-                    );
-                  })}
-                </RadioGroup>
-              </div>
-            ))}
+      {/* Industry Filter */}
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-1">Industry</label>
+        <select
+          value={selectedIndustry}
+          onChange={(e) => setSelectedIndustry(e.target.value)}
+          className="w-full border border-gray-300 rounded-lg p-2"
+        >
+          <option value="">All</option>
+          {uniqueIndustries.map((ind) => (
+            <option key={ind} value={ind}>
+              {ind}
+            </option>
+          ))}
+        </select>
+      </div>
 
-            <Popover.Close
-              className="mt-3 w-full text-center bg-gray-100 hover:bg-gray-200 py-1.5 text-sm rounded-md text-gray-600"
-              aria-label="Close"
-            >
-              Close
-            </Popover.Close>
-          </Popover.Content>
-        </Popover.Portal>
-      </Popover.Root>
+      {/* Salary Filter */}
+      <div className="mb-4">
+        <label className="block text-gray-700 mb-1">Salary</label>
+        <select
+          value={selectedSalary}
+          onChange={(e) => setSelectedSalary(e.target.value)}
+          className="w-full border border-gray-300 rounded-lg p-2"
+        >
+          <option value="">All</option>
+          {uniqueSalaries.map((sal) => (
+            <option key={sal} value={sal}>
+              {sal}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Clear Button */}
+      <button
+        onClick={() => {
+          setSelectedLocation("");
+          setSelectedIndustry("");
+          setSelectedSalary("");
+        }}
+        className="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg p-2 mt-2"
+      >
+        Clear Filters
+      </button>
     </div>
   );
 };

@@ -5,22 +5,28 @@ const isAuthenticated = async (req, res, next) => {
     const token = req.cookies.token;
     if (!token) {
       return res.status(401).json({
-        message: "user not authenticated",
+        message: "User not authenticated",
         success: false,
       });
     }
-    const decode = await jwt.verify(token, process.env.SECRET_KEY);
-    if (!decode) {
+
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+
+    if (!decoded) {
       return res.status(401).json({
-        message: "invalid token",
+        message: "Invalid token",
         success: false,
       });
     }
-    req.id = decode.userId;
+
+    req.id = decoded.userId || decoded.id; // Adjust according to your token payload
     next();
   } catch (error) {
-    console.log(error);
-    
+    console.error("Auth Error:", error.message);
+    return res.status(401).json({
+      message: "Authentication failed",
+      success: false,
+    });
   }
 };
 

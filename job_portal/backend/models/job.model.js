@@ -17,7 +17,7 @@ const jobSchema = new mongoose.Schema(
       },
     ],
     salary: {
-      type: Number,
+      type: String,
       required: true,
     },
     experienceLevel: {
@@ -36,14 +36,14 @@ const jobSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    Company: {
+    company: { // ✅ lowercase field
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
       required: true,
     },
     created_by: {
-      type: mongoose.Schema.Types.ObjectId, // ✅ Fixed
-      ref: 'User',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
     applications: [

@@ -1,69 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "./shared/Navbar";
 import Job from "./Job";
-
-const randomJobs = [
-  {
-    id: 1,
-    title: "Frontend Developer",
-    company: "Google",
-    location: "Bangalore, India",
-    posted: "2 days ago",
-    description: "Build and optimize user interfaces using React and Tailwind CSS.",
-    logo: "https://logo.clearbit.com/google.com",
-    positions: "Senior",
-    type: "Full-time",
-    salary: "₹15-20 LPA",
-  },
-  {
-    id: 2,
-    title: "Backend Developer",
-    company: "Microsoft",
-    location: "Hyderabad, India",
-    posted: "5 days ago",
-    description: "Design and implement RESTful APIs using Node.js and Express.",
-    logo: "https://logo.clearbit.com/microsoft.com",
-    positions: "Mid-level",
-    type: "Part-time",
-    salary: "₹10-12 LPA",
-  },
-  {
-    id: 3,
-    title: "Data Scientist",
-    company: "Amazon",
-    location: "Chennai, India",
-    posted: "1 day ago",
-    description: "Analyze big data sets to help inform business decisions.",
-    logo: "https://logo.clearbit.com/amazon.com",
-    positions: "Senior",
-    type: "Full-time",
-    salary: "₹18-25 LPA",
-  }
-];
-
+import { useDispatch, useSelector } from "react-redux";
+import useGetAllJobs from "@/hooks/useGetAllJobs";
 
 const Browse = () => {
+  const dispatch = useDispatch();
+  const allJobs = useSelector((store) => store.job?.allJobs) || [];
+  const { searchedQuery } = useSelector((store) => store.job);
+
+  // Fetch jobs whenever searchedQuery changes
+  useGetAllJobs();
+
+  // Optional: do not clear searchedQuery automatically
+  // User can manually clear it if needed
+
   return (
     <div>
       <Navbar />
       <div className="max-w-7xl mx-auto my-10">
-        <h1 className="font-bold text-xl my-10">search results {randomJobs.length}</h1>
-        <div className="grid grid-cols-3 gap-4 mt-5">
-          {randomJobs.map((item) => (
-            <Job
-              key={item.id}
-              title={item.title}
-              company={item.company}
-              location={item.location}
-              posted={item.posted}
-              description={item.description}
-              logo={item.logo}
-              positions={item.positions}
-              type={item.type}
-              salary={item.salary}
-            />
-          ))}
-        </div>
+        <h1 className="font-bold text-xl my-10">
+          Search Results {searchedQuery && `for "${searchedQuery}"`} ({allJobs.length})
+        </h1>
+
+        {allJobs.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
+            {allJobs.map((job) => (
+              <Job key={job._id} job={job} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No jobs found</p>
+        )}
       </div>
     </div>
   );

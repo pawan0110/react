@@ -8,15 +8,16 @@ import { useSelector } from "react-redux";
 import AppliedJobTable from "../AppliedJobTable";
 import UpdateProfileDialog from "../UpdateProfileDialog";
 import profileImg from "./1356853.jpeg";
+import useGetAppliedJobs from "@/hooks/useGetAppliedJobs";
 
 const Profile = () => {
+  const { loading, error } = useGetAppliedJobs();
   const { user } = useSelector((store) => store.auth); // ✅ get user from redux
   const [open, setOpen] = useState(false);
 
   return (
     <div>
       <Navbar />
-
       {/* Profile Card */}
       <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl my-6 p-8 shadow-sm">
         {/* Header */}
@@ -91,13 +92,18 @@ const Profile = () => {
           )}
         </div>
       </div>
-
       {/* Applied Jobs */}
       <div className="max-w-4xl mx-auto bg-white border border-gray-200 rounded-2xl p-6 shadow-sm my-6">
         <h2 className="text-xl font-bold text-center mb-4">Applied Jobs</h2>
-        <AppliedJobTable />
-      </div>
 
+        {loading ? (
+          <div className="text-center text-gray-500 py-4">Loading...</div>
+        ) : error ? (
+          <div className="text-center text-red-500 py-4">{error}</div>
+        ) : (
+          <AppliedJobTable />
+        )}
+      </div>
       {/* Update Profile Dialog */}
       <UpdateProfileDialog open={open} setOpen={setOpen} />
     </div>

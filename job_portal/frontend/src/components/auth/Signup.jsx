@@ -5,13 +5,13 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "../ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-
+import { useEffect } from "react";
 
 import axios from "axios";
 import { USER_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
- // Make sure lucide-react is installed
+// Make sure lucide-react is installed
 import { setLoading } from "@/redux/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -27,7 +27,7 @@ const SignUp = () => {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loading } = useSelector((store) => store.auth);
+  const { loading, user } = useSelector((store) => store.auth);
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -64,10 +64,15 @@ const SignUp = () => {
       toast.error(
         error?.response?.data?.message || "Something went wrong during signup"
       );
-    }finally{
+    } finally {
       dispatch(setLoading(false));
     }
   };
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  });
   return (
     <div>
       <Navbar />
