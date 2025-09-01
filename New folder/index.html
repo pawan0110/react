@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitHub Profile Finder</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- CSS File -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="search-container">
+      <input
+        type="text"
+        id="input"
+        placeholder="Enter GitHub Username"
+      />
+      <div id="search" onclick="getUser()">Search User</div>
+    </div>
+
+    <div class="profile-card">
+      <div class="main-info">
+        <img src="WhatsApp Image 2025-07-30 at 09.07.43_3ac74b94.jpg" alt="avatar" id="prof-img" />
+        <span class="name" id="name">ANTU KUMAR PASWAN</span>
+        <a href="#" id="username">@antukumar721</a>
+      </div>
+
+      <div class="bio">
+        <p id="bio">Front-End Developer</p>
+        <p><span id="repo">23</span> Repositories</p>
+      </div>
+
+      <div class="follow">
+        <div class="followers">
+          <span class="no" id="followers">1</span>
+          Followers
+        </div>
+        <div class="following">
+          <span class="no" id="following">23</span>
+          Following
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS File -->
+  <script src="script.js"></script>
+</body>
+</html>
