@@ -1,28 +1,28 @@
-import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { removeTodo, updateTodo } from '../features/todoSlice'
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { removeTodo, updateTodo } from "../features/todoSlice";
 
 function Todos() {
-  const todos = useSelector(state => state.todo.todos) || []
-  const dispatch = useDispatch()
+  const todos = useSelector((state) => state.todo.todos) || [];
+  const dispatch = useDispatch();
 
-  const [editingId, setEditingId] = useState(null)
-  const [editText, setEditText] = useState("")
+  const [editingId, setEditingId] = useState(null);
+  const [editText, setEditText] = useState("");
 
   const handleEdit = (todo) => {
-    setEditingId(todo.id)
-    setEditText(todo.text)
-  }
+    setEditingId(todo.id);
+    setEditText(todo.text);
+  };
 
   const handleSave = (id) => {
-    if (editText.trim() === "") return
-    dispatch(updateTodo({ id, text: editText }))
-    setEditingId(null)
-  }
+    if (editText.trim() === "") return;
+    dispatch(updateTodo({ id, text: editText }));
+    setEditingId(null);
+  };
 
   const handleCancel = () => {
-    setEditingId(null)
-  }
+    setEditingId(null);
+  };
 
   return (
     <>
@@ -40,8 +40,8 @@ function Todos() {
                   value={editText}
                   onChange={(e) => setEditText(e.target.value)}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") handleSave(todo.id)
-                    if (e.key === "Escape") handleCancel()
+                    if (e.key === "Enter") handleSave(todo.id);
+                    if (e.key === "Escape") handleCancel();
                   }}
                   autoFocus
                 />
@@ -83,7 +83,7 @@ function Todos() {
         ))}
       </ul>
     </>
-  )
+  );
 }
 
-export default Todos
+export default Todos;
